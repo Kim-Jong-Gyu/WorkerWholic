@@ -1,6 +1,7 @@
 package com.example.workerwholic.location.controller;
 
 import com.example.workerwholic.location.dto.LocationRequestDto;
+import com.example.workerwholic.location.dto.LocationResponseDto;
 import com.example.workerwholic.location.entity.Location;
 import com.example.workerwholic.location.repository.LocationRepository;
 import com.example.workerwholic.location.service.LocationService;
@@ -23,7 +24,7 @@ public class LocationController {
 
     @GetMapping("/location/{id}")
     @ResponseBody
-    public String getLocation(@PathVariable Long id){
+    public LocationResponseDto getLocation(@PathVariable Long id){
         return  locationService.getLocation(id);
     }
 }

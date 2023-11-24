@@ -1,6 +1,7 @@
 package com.example.workerwholic.location.service;
 
 import com.example.workerwholic.location.dto.LocationRequestDto;
+import com.example.workerwholic.location.dto.LocationResponseDto;
 import com.example.workerwholic.location.entity.Location;
 import com.example.workerwholic.location.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,10 +18,10 @@ public class LocationService {
         return locations;
     }
 
-    public String getLocation(Long id) {
+    public LocationResponseDto getLocation(Long id) {
      Location location = locationRepository.findById(id).orElseThrow(
              () -> new IllegalArgumentException("선택한 지역 존재하지 않습니다.")
      );
-        return location.getLocationName();
+        return new LocationResponseDto(location);
     }
 }
