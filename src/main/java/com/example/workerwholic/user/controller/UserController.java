@@ -1,6 +1,5 @@
 package com.example.workerwholic.user.controller;
 
-import com.example.workerwholic.user.dto.LoginRequestDto;
 import com.example.workerwholic.user.dto.ProfileRequestDto;
 import com.example.workerwholic.user.dto.SignupRequestDto;
 import com.example.workerwholic.user.service.UserService;
@@ -27,7 +26,7 @@ public class UserController {
         return "signup";
     }
     @PostMapping("/user/signup")
-    public String signup(SignupRequestDto requestDto){
+    public String signup(@RequestBody SignupRequestDto requestDto){
         userService.signup(requestDto);
 
         return "redirect:/api/user/login-page";
