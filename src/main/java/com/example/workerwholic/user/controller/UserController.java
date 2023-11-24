@@ -6,7 +6,7 @@ import com.example.workerwholic.user.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequestMapping("/api")
 public class UserController {
 
@@ -26,10 +26,8 @@ public class UserController {
         return "signup";
     }
     @PostMapping("/user/signup")
-    public String signup(@RequestBody SignupRequestDto requestDto){
+    public void signup(@RequestBody SignupRequestDto requestDto){
         userService.signup(requestDto);
-
-        return "redirect:/api/user/login-page";
     }
 
     @PatchMapping("/user/patch-mapping/{id}")
