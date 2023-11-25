@@ -2,6 +2,8 @@ package com.example.workerwholic.comment.entity;
 
 import com.example.workerwholic.comment.dto.CommentRequestDto;
 import com.example.workerwholic.common.entity.Time;
+import com.example.workerwholic.post.entity.Post;
+import com.example.workerwholic.user.entity.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -18,25 +20,23 @@ public class Comment extends Time {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @Column(nullable = false)
     private String text;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "parent_id")
     private Comment parent;      // 상위 댓글
 
-    @NotNull
+    @Column
     private Long topParentId;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
-    @NotNull
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "post_id")
-    @NotNull
     private Post post;
 
     public Comment(CommentRequestDto requestDto, User user, Post post) {

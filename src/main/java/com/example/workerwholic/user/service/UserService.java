@@ -1,8 +1,7 @@
 package com.example.workerwholic.user.service;
 
-import com.example.workerwholic.user.dto.LoginRequestDto;
 import com.example.workerwholic.user.dto.ProfileRequestDto;
-import com.example.workerwholic.user.util.JwtUtil;
+import com.example.workerwholic.user.dto.ResponseSignupDto;
 import com.example.workerwholic.user.repository.UserRepository;
 import com.example.workerwholic.common.constant.UserRoleEnum;
 import com.example.workerwholic.user.dto.SignupRequestDto;
@@ -20,13 +19,10 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-    private final JwtUtil jwtUtil;
-
     // ADMIN_TOKEN
     private final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
-    public void signup(SignupRequestDto requestDto) {
+    public ResponseSignupDto signup(SignupRequestDto requestDto) {
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
 
@@ -55,6 +51,7 @@ public class UserService {
         // 사용자 등록
         User user = new User(username, password, email, role);
         userRepository.save(user);
+        return new ResponseSignupDto(user);
     }
 
     @Transactional
@@ -62,7 +59,6 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("선택한 아이디가 존재하지 않습니다.")
         );
-
         user.update(requestDto.getDiscription());
         return id;
     }

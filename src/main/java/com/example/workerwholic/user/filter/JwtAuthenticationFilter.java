@@ -1,8 +1,10 @@
 package com.example.workerwholic.user.filter;
 
-import com.example.workerwholic.user.util.JwtUtil;
 import com.example.workerwholic.common.constant.UserRoleEnum;
 import com.example.workerwholic.user.dto.LoginRequestDto;
+import com.example.workerwholic.user.entity.RefreshToken;
+import com.example.workerwholic.user.repository.RefreshTokenRepository;
+import com.example.workerwholic.user.util.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,9 +21,11 @@ import java.io.IOException;
 @Slf4j(topic = "로그인 및 JWT 생성")
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final JwtUtil jwtUtil;
+    private final RefreshTokenRepository refreshTokenRepository;
 
-    public JwtAuthenticationFilter(JwtUtil jwtUtil) {
+    public JwtAuthenticationFilter(JwtUtil jwtUtil, RefreshTokenRepository refreshTokenRepository) {
         this.jwtUtil = jwtUtil;
+        this.refreshTokenRepository = refreshTokenRepository;
         setFilterProcessesUrl("/api/user/login");
     }
 
@@ -50,8 +54,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String username = ((UserDetailsImpl) authResult.getPrincipal()).getUsername();
         UserRoleEnum role = ((UserDetailsImpl) authResult.getPrincipal()).getUser().getRole();
 
-        String token = jwtUtil.createToken(username, role);
-        jwtUtil.addJwtToCookie(token, response);
+        String accessToken = jwtUtil.createToken(username, role, "Access");
+        String refreshToken = jwtUtil.createToken(username,role, "Refresh");
+        refreshTokenRepository.save(new RefreshToken(refreshToken.substring(7), username));
+        response.addHeader(JwtUtil.ACCESS_TOKEN_HEADER, accessToken);
+        response.addHeader(JwtUtil.REFRESH_TOKEN_HEADER, refreshToken);
+
     }
 
     @Override
@@ -59,4 +67,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         log.info("로그인 실패");
         response.setStatus(401);
     }
+
+
 }
