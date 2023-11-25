@@ -28,7 +28,7 @@ public class Post extends Time {
     @Column
     private String img;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

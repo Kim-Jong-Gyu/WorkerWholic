@@ -3,7 +3,7 @@ package com.example.workerwholic.post.controller;
 import com.example.workerwholic.post.dto.PostRequestDto;
 import com.example.workerwholic.post.dto.PostResponseDto;
 import com.example.workerwholic.post.service.PostService;
-import com.example.workerwholic.user.security.UserDetailsImpl;
+import com.example.workerwholic.user.filter.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;

@@ -1,7 +1,6 @@
 package com.example.workerwholic.user.repository;
 
 import com.example.workerwholic.common.constant.UserRoleEnum;
-import com.example.workerwholic.user.dto.LoginRequestDto;
 import com.example.workerwholic.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

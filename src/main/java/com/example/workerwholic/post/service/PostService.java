@@ -40,7 +40,7 @@ public class PostService {
     }
 
     public List<PostResponseDto> getUserPosts(User user) {
-        List<Post> postList = postRepository.findAllById(user.getId());
+        List<Post> postList = postRepository.findAllByUserId(user.getId());
         return postList.stream().map(PostResponseDto :: new).toList();
     }
 

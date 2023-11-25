@@ -20,9 +20,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-    private final JwtUtil jwtUtil;
-
     // ADMIN_TOKEN
     private final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
@@ -62,7 +59,6 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("선택한 아이디가 존재하지 않습니다.")
         );
-
         user.update(requestDto.getDiscription());
         return id;
     }

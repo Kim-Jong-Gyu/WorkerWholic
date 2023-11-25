@@ -3,13 +3,15 @@ package com.example.workerwholic.comment.controller;
 import com.example.workerwholic.comment.dto.CommentRequestDto;
 import com.example.workerwholic.comment.dto.CommentResponseDto;
 import com.example.workerwholic.comment.service.CommentService;
+import com.example.workerwholic.user.filter.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class CommentController {
     private final CommentService commentService;

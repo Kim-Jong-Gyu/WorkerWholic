@@ -2,6 +2,8 @@ package com.example.workerwholic.comment.entity;
 
 import com.example.workerwholic.comment.dto.CommentRequestDto;
 import com.example.workerwholic.common.entity.Time;
+import com.example.workerwholic.post.entity.Post;
+import com.example.workerwholic.user.entity.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

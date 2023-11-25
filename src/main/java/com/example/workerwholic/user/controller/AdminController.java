@@ -10,14 +10,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class AdminController {
 
     private final AdminService adminService;
     @GetMapping("/admin/profilelist")
-    @ResponseBody
     public List<User> getProfilelist(@AuthenticationPrincipal UserDetailsImpl userDetails){
         return adminService.getProfilelist( userDetails.getUser());
     }

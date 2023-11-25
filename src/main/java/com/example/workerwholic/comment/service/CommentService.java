@@ -4,6 +4,10 @@ import com.example.workerwholic.comment.dto.CommentRequestDto;
 import com.example.workerwholic.comment.dto.CommentResponseDto;
 import com.example.workerwholic.comment.entity.Comment;
 import com.example.workerwholic.comment.repository.CommentRepository;
+import com.example.workerwholic.common.constant.UserRoleEnum;
+import com.example.workerwholic.post.entity.Post;
+import com.example.workerwholic.post.repository.PostRepository;
+import com.example.workerwholic.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.data.domain.Page;
@@ -27,7 +31,7 @@ public class CommentService {
             throw new IllegalIdentifierException("카드를 선택해주세요.");
         }
         Post post = postRepository.findById(requestDto.getPostId()).orElseThrow(() -> new IllegalIdentifierException("선택한 카드는 존재하지 않습니다."));
-        Comment saveComment = commentRepository.save(new Comment(requestDto, post, user));
+        Comment saveComment = commentRepository.save(new Comment(requestDto, user, post));
         return new CommentResponseDto(saveComment);
     }
 
