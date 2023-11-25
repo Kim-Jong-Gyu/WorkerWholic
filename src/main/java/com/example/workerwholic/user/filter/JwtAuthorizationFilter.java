@@ -1,5 +1,8 @@
 package com.example.workerwholic.user.filter;
 
+import com.example.workerwholic.common.constant.UserRoleEnum;
+import com.example.workerwholic.user.entity.RefreshToken;
+import com.example.workerwholic.user.repository.RefreshTokenRepository;
 import com.example.workerwholic.user.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -16,6 +19,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
+
+import static com.example.workerwholic.user.util.JwtUtil.AUTHORIZATION_KEY;
 
 @Slf4j(topic = "JWT 검증 및 인가")
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
@@ -23,35 +29,47 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
 
-    public JwtAuthorizationFilter(JwtUtil jwtUtil, UserDetailsServiceImpl userDetailsService) {
+    private final RefreshTokenRepository refreshTokenRepository;
+
+    public JwtAuthorizationFilter(JwtUtil jwtUtil, UserDetailsServiceImpl userDetailsService, RefreshTokenRepository refreshTokenRepository) {
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
+        this.refreshTokenRepository = refreshTokenRepository;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
 
-        String tokenValue = jwtUtil.getJwtFromHeader(req);
+        String accessTokenValue = jwtUtil.getJwtFromHeader(req, "Access");
+        String refreshTokenValue = jwtUtil.getJwtFromHeader(req, "Refresh");
 
-        if (StringUtils.hasText(tokenValue)) {
+        if (StringUtils.hasText(accessTokenValue)) {
             // JWT 토큰 substring
-            log.info(tokenValue);
-
-            if (!jwtUtil.validateToken(tokenValue)) {
-                log.error("Token Error");
-                return;
-            }
-
-            Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
-
-            try {
-                setAuthentication(info.getSubject());
-            } catch (Exception e) {
-                log.error(e.getMessage());
-                return;
+            // 만료되었을 때 response 반환해줘야 한다. -> 미구현
+            if (jwtUtil.validateToken(accessTokenValue)) {
+                Claims info = jwtUtil.getUserInfoFromToken(accessTokenValue);
+                try {
+                    setAuthentication(info.getSubject());
+                } catch (Exception e) {
+                    log.error(e.getMessage());
+                    return;
+                }
+            } else {
+                if (StringUtils.hasText(refreshTokenValue)) {
+                    if (validateRefreshToken(refreshTokenValue)) {
+                        Claims info = jwtUtil.getUserInfoFromToken(refreshTokenValue);
+                        String accessToken = jwtUtil.createToken(info.getSubject(), UserRoleEnum.valueOf(info.get(AUTHORIZATION_KEY, String.class)), "Access");
+                        res.addHeader(JwtUtil.ACCESS_TOKEN_HEADER, accessToken);
+                        try {
+                            setAuthentication(info.getSubject());
+                        } catch (Exception e) {
+                            log.error(e.getMessage());
+                            return;
+                        }
+                    }
+                }
             }
         }
-
         filterChain.doFilter(req, res);
     }
 
@@ -68,5 +86,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private Authentication createAuthentication(String username) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    }
+
+    private boolean validateRefreshToken(String refreshTokenValue) {
+        List<RefreshToken> refreshToken = refreshTokenRepository.findAll();
+        for (RefreshToken token : refreshToken) {
+            if (token.getRefreshToken().equals(refreshTokenValue)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

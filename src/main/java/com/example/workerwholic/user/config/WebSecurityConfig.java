@@ -2,8 +2,9 @@ package com.example.workerwholic.user.config;
 
 import com.example.workerwholic.user.filter.JwtAuthenticationFilter;
 import com.example.workerwholic.user.filter.JwtAuthorizationFilter;
-import com.example.workerwholic.user.util.JwtUtil;
 import com.example.workerwholic.user.filter.UserDetailsServiceImpl;
+import com.example.workerwholic.user.repository.RefreshTokenRepository;
+import com.example.workerwholic.user.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +27,7 @@ public class WebSecurityConfig {
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
-
+    private final RefreshTokenRepository refreshTokenRepository;
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -40,14 +41,15 @@ public class WebSecurityConfig {
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil);
+
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil, refreshTokenRepository);
         filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
         return filter;
     }
 
     @Bean
     public JwtAuthorizationFilter jwtAuthorizationFilter() {
-        return new JwtAuthorizationFilter(jwtUtil, userDetailsService);
+        return new JwtAuthorizationFilter(jwtUtil, userDetailsService, refreshTokenRepository);
     }
 
     @Bean
