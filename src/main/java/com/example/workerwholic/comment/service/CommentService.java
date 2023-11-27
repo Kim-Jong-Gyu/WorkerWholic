@@ -4,7 +4,7 @@ import com.example.workerwholic.comment.dto.CommentRequestDto;
 import com.example.workerwholic.comment.dto.CommentResponseDto;
 import com.example.workerwholic.comment.entity.Comment;
 import com.example.workerwholic.comment.repository.CommentRepository;
-import com.example.workerwholic.common.constant.UserRoleEnum;
+import com.example.workerwholic.user.entity.UserRoleEnum;
 import com.example.workerwholic.post.entity.Post;
 import com.example.workerwholic.post.repository.PostRepository;
 import com.example.workerwholic.user.entity.User;

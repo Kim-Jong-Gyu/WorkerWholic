@@ -1,6 +1,5 @@
 package com.example.workerwholic.user.entity;
 
-import com.example.workerwholic.common.constant.UserRoleEnum;
 import com.example.workerwholic.user.dto.UserUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;

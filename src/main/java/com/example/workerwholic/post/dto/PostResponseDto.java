@@ -1,6 +1,5 @@
 package com.example.workerwholic.post.dto;
 
-import com.example.workerwholic.common.entity.Time;
 import com.example.workerwholic.post.entity.Post;
 import lombok.Getter;
 

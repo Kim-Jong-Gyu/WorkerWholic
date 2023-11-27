@@ -1,5 +1,7 @@
 package com.example.workerwholic.post.controller;
 
+import com.example.workerwholic.location.entity.Location;
+import com.example.workerwholic.location.repository.LocationRepository;
 import com.example.workerwholic.post.dto.PostRequestDto;
 import com.example.workerwholic.post.dto.PostResponseDto;
 import com.example.workerwholic.post.service.PostService;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
