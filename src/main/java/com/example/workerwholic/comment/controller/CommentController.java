@@ -21,7 +21,7 @@ public class CommentController {
         return commentService.createComment(requestDto, userDetails.getUser());
     }
 
-    @PutMapping("/comments/{id}")
+    @PatchMapping("/comments/{id}")
     public CommentResponseDto updateComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentService.updateComment(id, requestDto, userDetails.getUser());
     }
