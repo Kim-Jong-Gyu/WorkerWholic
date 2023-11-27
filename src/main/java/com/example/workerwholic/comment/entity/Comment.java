@@ -44,6 +44,17 @@ public class Comment extends Time {
         this.user = user;
     }
 
+    public void addParent(Comment parentComment) {
+        this.parent = parentComment;
+        if (this.topParentId == this.id) { //부모 댓글이 있으면 최상단 부모 id 저장
+            if (parentComment.getParent() != null) {
+                this.topParentId = parentComment.getParent().getTopParentId();
+            } else {
+                this.topParentId = parentComment.getId();
+            }
+        }
+    }
+
     public void update(CommentRequestDto requestDto) {
         this.text = requestDto.getText();
     }
