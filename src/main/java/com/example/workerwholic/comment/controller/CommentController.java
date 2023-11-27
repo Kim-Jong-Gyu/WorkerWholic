@@ -37,6 +37,4 @@ public class CommentController {
             @RequestParam(value = "page", defaultValue = "1") int page) {
         return commentService.getCommentsInPost(postId, page-1);
     }
-
-
 }
