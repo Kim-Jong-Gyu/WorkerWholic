@@ -5,7 +5,6 @@ import com.example.workerwholic.common.entity.Time;
 import com.example.workerwholic.post.entity.Post;
 import com.example.workerwholic.user.entity.User;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,6 +42,17 @@ public class Comment extends Time {
         this.text = requestDto.getText();
         this.post = post;
         this.user = user;
+    }
+
+    public void addParent(Comment parentComment) {
+        this.parent = parentComment;
+        if (this.topParentId == this.id) { //부모 댓글이 있으면 최상단 부모 id 저장
+            if (parentComment.getParent() != null) {
+                this.topParentId = parentComment.getParent().getTopParentId();
+            } else {
+                this.topParentId = parentComment.getId();
+            }
+        }
     }
 
     public void update(CommentRequestDto requestDto) {

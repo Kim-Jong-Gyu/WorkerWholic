@@ -26,12 +26,23 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
 
+    @Transactional
     public CommentResponseDto createComment(CommentRequestDto requestDto, User user) {
         if (requestDto.getPostId() == null) {
-            throw new IllegalIdentifierException("카드를 선택해주세요.");
+            throw new IllegalIdentifierException("게시글를 선택해주세요.");
         }
-        Post post = postRepository.findById(requestDto.getPostId()).orElseThrow(() -> new IllegalIdentifierException("선택한 카드는 존재하지 않습니다."));
-        Comment saveComment = commentRepository.save(new Comment(requestDto, user, post));
+
+        Post post = postRepository.findById(requestDto.getPostId()).orElseThrow(() -> new IllegalIdentifierException("선택한 게시글은 존재하지 않습니다."));
+        Comment saveComment = new Comment(requestDto, user, post);
+
+        commentRepository.save(saveComment);
+        saveComment.setTopParentId(saveComment.getId()); //그룹화를 위해 자기자신 넣음
+
+        if (requestDto.getParentId() != null) {
+            Comment parentComment = commentRepository.findByIdAndPostId(requestDto.getParentId(), requestDto.getPostId()).orElseThrow(() -> new IllegalIdentifierException("해당 댓글이 존재하지 않습니다."));
+            saveComment.addParent(parentComment);
+        }
+
         return new CommentResponseDto(saveComment);
     }
 
