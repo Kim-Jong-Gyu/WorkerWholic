@@ -1,6 +1,6 @@
 package com.example.workerwholic.user.filter;
 
-import com.example.workerwholic.common.constant.UserRoleEnum;
+import com.example.workerwholic.user.entity.UserRoleEnum;
 import com.example.workerwholic.user.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -1,5 +1,7 @@
 package com.example.workerwholic.post.service;
 
+import com.example.workerwholic.location.entity.Location;
+import com.example.workerwholic.location.repository.LocationRepository;
 import com.example.workerwholic.post.dto.PostRequestDto;
 import com.example.workerwholic.post.dto.PostResponseDto;
 import com.example.workerwholic.post.entity.Post;
@@ -16,8 +18,10 @@ import java.util.*;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final LocationRepository locationRepository;
     public PostResponseDto createPost(User user, PostRequestDto postRequestDto) {
-        Post post = postRepository.save(new Post(user, postRequestDto));
+        Location location = findLocation(postRequestDto.getLocationId());
+        Post post = postRepository.save(new Post(user, postRequestDto, location));
         return new PostResponseDto(post);
     }
 
@@ -68,6 +72,11 @@ public class PostService {
     private Post findPost(Long id) {
         return postRepository.findById(id).orElseThrow(() ->
                 new NullPointerException("게시글이 없습니다.")
+        );
+    }
+    private Location findLocation(Long id) {
+        return locationRepository.findById(id).orElseThrow(() ->
+                new NullPointerException("해당 지역이 없습니다.")
         );
     }
 }

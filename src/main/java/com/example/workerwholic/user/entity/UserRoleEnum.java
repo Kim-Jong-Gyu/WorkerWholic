@@ -1,4 +1,4 @@
-package com.example.workerwholic.common.constant;
+package com.example.workerwholic.user.entity;
 
 public enum UserRoleEnum {
     USER(Authority.USER),

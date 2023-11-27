@@ -1,6 +1,6 @@
 package com.example.workerwholic.user.filter;
 
-import com.example.workerwholic.common.constant.UserRoleEnum;
+import com.example.workerwholic.user.entity.UserRoleEnum;
 import com.example.workerwholic.user.dto.LoginRequestDto;
 import com.example.workerwholic.user.entity.RefreshToken;
 import com.example.workerwholic.user.repository.RefreshTokenRepository;

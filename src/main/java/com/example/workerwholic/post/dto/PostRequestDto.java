@@ -7,5 +7,5 @@ public class PostRequestDto {
     private String title;
     private String img;
     private String content;
-
+    private Long locationId;
 }

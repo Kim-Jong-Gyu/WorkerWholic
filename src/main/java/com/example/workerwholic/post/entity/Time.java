@@ -1,4 +1,4 @@
-package com.example.workerwholic.common.entity;
+package com.example.workerwholic.post.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -4,7 +4,7 @@ import com.example.workerwholic.user.dto.*;
 import com.example.workerwholic.user.entity.RefreshToken;
 import com.example.workerwholic.user.repository.RefreshTokenRepository;
 import com.example.workerwholic.user.repository.UserRepository;
-import com.example.workerwholic.common.constant.UserRoleEnum;
+import com.example.workerwholic.user.entity.UserRoleEnum;
 import com.example.workerwholic.user.entity.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

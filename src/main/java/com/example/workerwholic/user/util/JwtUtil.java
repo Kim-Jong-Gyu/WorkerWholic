@@ -1,7 +1,6 @@
 package com.example.workerwholic.user.util;
 
-import com.example.workerwholic.common.constant.UserRoleEnum;
-import com.example.workerwholic.user.entity.RefreshToken;
+import com.example.workerwholic.user.entity.UserRoleEnum;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -12,12 +11,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import javax.crypto.SecretKey;
 import java.security.Key;
 import java.time.Duration;
 import java.util.Base64;
 import java.util.Date;
-import java.util.Optional;
 
 @Component
 public class JwtUtil {

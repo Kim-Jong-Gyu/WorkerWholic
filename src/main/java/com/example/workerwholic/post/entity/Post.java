@@ -1,6 +1,6 @@
 package com.example.workerwholic.post.entity;
 
-import com.example.workerwholic.common.entity.Time;
+import com.example.workerwholic.location.entity.Location;
 import com.example.workerwholic.post.dto.PostRequestDto;
 import com.example.workerwholic.user.entity.User;
 import jakarta.persistence.*;
@@ -32,11 +32,16 @@ public class Post extends Time {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public Post(User user, PostRequestDto postRequestDto) {
+    @ManyToOne
+    @JoinColumn(name = "location_id", nullable = false)
+    private Location location;
+
+    public Post(User user, PostRequestDto postRequestDto, Location location) {
         this.title = postRequestDto.getTitle();
         this.content = postRequestDto.getContent();
         this.img = postRequestDto.getImg();
         this.user = user;
+        this.location = location;
     }
 
     public void update(PostRequestDto postRequestDto) {
