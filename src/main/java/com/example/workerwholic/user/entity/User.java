@@ -1,6 +1,7 @@
 package com.example.workerwholic.user.entity;
 
 import com.example.workerwholic.common.constant.UserRoleEnum;
+import com.example.workerwholic.user.dto.UserUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,24 +21,40 @@ public class User {
     private String username;
 
     @Column(nullable = false)
+    private String nickname;
+
+    @Column(nullable = false)
     private String password;
 
     @Column(nullable = false, unique = true)
     private String email;
 
-    private String discription;
+    @Column(name = "description")
+    private String desc;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
-    public User(String username, String password, String email, UserRoleEnum role) {
+    public User(String username, String password, String email, UserRoleEnum role, String nickName) {
         this.username =  username;
         this.password = password;
         this.email = email;
         this.role = role;
+        this.nickname = nickName;
     }
-    public void update(String discription) {
-        this.discription = discription;
+    public void update(UserUpdateRequestDto requestDto) {
+        if(requestDto.getDescription() != null)
+            this.desc = requestDto.getDescription();
+        if(requestDto.getEmail() != null)
+            this.email = requestDto.getEmail();
+    }
+
+    public void descUpdate(String desc) {
+        this.desc = desc;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
     }
 }
